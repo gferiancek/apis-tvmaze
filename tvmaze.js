@@ -27,11 +27,10 @@ async function getShowsByTerm(term) {
  * url image if it is null.
  *    Return [ {id, name, summary, image}, ...]
  */
+
 function parseShowData(showsData) {
   console.log("parseTvMazeData");
-  //console.log(tvMazeData);
 
-  // showAndScore: { score, show }
   return showsData.map(showAndScore => ({
     id: showAndScore.show.id,
     name: showAndScore.show.name,
@@ -48,6 +47,7 @@ function parseShowData(showsData) {
  *  Returns (promise) array of episode objects: [episode, episode, ...].
  *    Each episode object should contain exactly: {id, name, season, number}
  */
+
 async function getEpisodesByShowId(showId) {
   console.log("getEpisodesOfShow", { showId });
 
@@ -63,6 +63,7 @@ async function getEpisodesByShowId(showId) {
  * infomation relavant to the application.
  *    Return [ {id, name, season, number}, ...]
  */
+
 function parseEpisodeData(showEpisodesData) {
   console.log("parseEpisodeData");
   //id, name, season, episode number

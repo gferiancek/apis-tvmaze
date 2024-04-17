@@ -6,7 +6,6 @@ const $searchForm = document.querySelector("#searchForm");
 const $episodesList = document.querySelector("#episodesList");
 
 /** Given list of shows, create markup for each and append to DOM.
- *
  * A show is {id, name, summary, image}
  * */
 
@@ -57,26 +56,33 @@ async function searchShowsAndDisplay() {
  */
 
 async function getEpisodesOfShow(id) {
+  console.log("getEpisodeOfShow");
 
   const episodes = await getEpisodesByShowId(id);
+  console.log({ episodes });
   return episodes;
 }
 
-/** Write a clear docstring for this function... */
+/** displays episodes in the DOM
+ * Results in a list of episodes appended to the bottom of the page
+ * An episode is {name, season, number}
+ */
 
 function displayEpisodes(episodes) {
-    for (let episode of episodes) {
-      const {name, season, number} = episode;
-      const $li = document.createElement("li")
-      $li.innerText = `${name}, ${season}, ${episode}`
+  console.log("displayEpisodes");
 
-      $episodesList.append($li);
-    }
- }
+  //changing to "block" because $episodesArea is hidden by default
+  $episodesArea.style.display = "block";
+  $episodesList.innerHTML = "";
 
-// add other functions that will be useful / match our structure & design
-// and udpate start as necessary
+  for (const episode of episodes) {
+    const { name, season, number } = episode;
+    const $liEpisode = document.createElement("li");
+    $liEpisode.innerText = `${name}, ${season}, ${number}`;
 
+    $episodesList.append($liEpisode);
+  }
+}
 
 /** Attach event listeners to show search form and show list  */
 
@@ -90,15 +96,13 @@ function start() {
 }
 
 /** Handles click of Episodes button to fetch episodes */
+
 async function handleEpisodeClick(evt) {
   if (!evt.target.matches(".Show-getEpisodes")) return;
 
-  const show = evt.target.closest(".Show");
-  const showId = show.dataset.showId;
-
+  const $show = evt.target.closest(".Show");
+  const showId = $show.dataset.showId;
   const episodes = await getEpisodesOfShow(showId);
-
-  // console episodes
 
   displayEpisodes(episodes);
 }
