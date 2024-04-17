@@ -17,8 +17,9 @@ async function getShowsByTerm(term) {
   const resp = await fetch(`${TV_MAZE_BASE_URL}/search/shows?${params}`);
   const tvMazeData = await resp.json();
 
-  return parseTvMazeData(tvMazeData);
+  const allShows = parseShowData(tvMazeData);
 
+  return allShows;
 }
 
 /** Takes array of objects from TV MAZE API and parses out
@@ -26,25 +27,19 @@ async function getShowsByTerm(term) {
  * url image if it is null.
  *    Return [ {id, name, summary, image}, ...]
  */
-function parseTvMazeData(showsData) {
+function parseShowData(showsData) {
   console.log("parseTvMazeData");
   //console.log(tvMazeData);
 
-  return showsData.map(data => {
-    let url = TV_MAZE_PLACEHOLDER_IMG_URL;
-
-    if (data.show.image !== null) {
-      url = data.show.image.medium;
-    }
-
-    return {
-      id: data.show.id,
-      name: data.show.name,
-      summary: data.show.summary,
-      image: url,
-    };
-  }
-  );
+  // showAndScore: { score, show }
+  return showsData.map(showAndScore => ({
+    id: showAndScore.show.id,
+    name: showAndScore.show.name,
+    summary: showAndScore.show.summary,
+    image: showAndScore.show.image
+      ? showAndScore.show.image.medium
+      : TV_MAZE_PLACEHOLDER_IMG_URL,
+  }));
 }
 
 // ADD: other functions that will be useful for getting episode/show data
