@@ -1,4 +1,5 @@
 const TV_MAZE_BASE_URL = "http://api.tvmaze.com";
+const TV_MAZE_PLACEHOLDER_IMG_URL = "https://tinyurl.com/tv-missing";
 
 /** Given a search term, search for tv shows that match that query.
  *
@@ -8,12 +9,12 @@ const TV_MAZE_BASE_URL = "http://api.tvmaze.com";
  */
 
 async function getShowsByTerm(term) {
-  console.log("getShowsByTerm");
-  // ADD: Remove placeholder & make request to TVMaze search shows API.
+  console.log("getShowsByTerm", { term });
 
   const params = new URLSearchParams({ q: term });
+  console.log(params.values());
 
-  const resp = await fetch(`${TV_MAZE_BASE_URL}/shows?${params}`);
+  const resp = await fetch(`${TV_MAZE_BASE_URL}/search/shows?${params}`);
   const tvMazeData = await resp.json();
 
   return parseTvMazeData(tvMazeData);
@@ -21,19 +22,28 @@ async function getShowsByTerm(term) {
 }
 
 /** Takes array of objects from TV MAZE API and parses out
- * infomation relavant to the application.
+ * infomation relavant to the application. Sets default
+ * url image if it is null.
  *    Return [ {id, name, summary, image}, ...]
  */
-function parseTvMazeData(shows) {
+function parseTvMazeData(showsData) {
   console.log("parseTvMazeData");
   //console.log(tvMazeData);
 
-  return shows.map(show => ({
-    id: show.id,
-    name: show.name,
-    summary: show.summary,
-    image: show.image.medium
-  })
+  return showsData.map(data => {
+    let url = TV_MAZE_PLACEHOLDER_IMG_URL;
+
+    if (data.show.image !== null) {
+      url = data.show.image.medium;
+    }
+
+    return {
+      id: data.show.id,
+      name: data.show.name,
+      summary: data.show.summary,
+      image: url,
+    };
+  }
   );
 }
 
