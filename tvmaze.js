@@ -48,7 +48,7 @@ function parseShowData(showsData) {
  *  Returns (promise) array of episode objects: [episode, episode, ...].
  *    Each episode object should contain exactly: {id, name, season, number}
  */
-async function getEpisodesOfShow(showId) {
+async function getEpisodesByShowId(showId) {
   console.log("getEpisodesOfShow", { showId });
 
   console.log(params.values());
@@ -81,4 +81,4 @@ function parseEpisodeData(showEpisodesData) {
 
 // ADD: other functions that will be useful for getting episode/show data
 
-export { getShowsByTerm };
+export { getShowsByTerm, getEpisodesByShowId };

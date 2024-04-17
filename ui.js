@@ -1,4 +1,4 @@
-import { getShowsByTerm } from "./tvmaze.js";
+import { getShowsByTerm, getEpisodesByShowId } from "./tvmaze.js";
 
 const $showsList = document.querySelector("#showsList");
 const $episodesArea = document.querySelector("#episodesArea");
@@ -11,7 +11,6 @@ const $searchForm = document.querySelector("#searchForm");
 
 function displayShows(shows) {
   $showsList.innerHTML = '';
-
 
   for (const show of shows) {
     const { id, name, summary, image } = show;
@@ -56,7 +55,10 @@ async function searchShowsAndDisplay() {
  *      { id, name, season, number }
  */
 
-// async function getEpisodesOfShow(id) { }
+async function getEpisodesOfShow(id) {
+
+  const episodes = await getEpisodesByShowId(id);
+}
 
 /** Write a clear docstring for this function... */
 
@@ -73,7 +75,10 @@ function start() {
     evt.preventDefault();
     await searchShowsAndDisplay();
   });
+
+  $showsList.addEventListener("click", handleClick(evt));
 }
+//TODO: add in the handleClick function for listening on the shows area
 
 
 export {
