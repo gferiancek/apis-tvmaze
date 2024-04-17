@@ -16,7 +16,7 @@ async function getShowsByTerm(term) {
   const resp = await fetch(`${TV_MAZE_BASE_URL}/shows?${params}`);
   const tvMazeData = await resp.json();
 
-  parseTvMazeData(tvMazeData);
+  return parseTvMazeData(tvMazeData);
 
 }
 
@@ -24,25 +24,17 @@ async function getShowsByTerm(term) {
  * infomation relavant to the application.
  *    Return [ {id, name, summary, image}, ...]
  */
-function parseTvMazeData(tvMazeData) {
+function parseTvMazeData(shows) {
   console.log("parseTvMazeData");
   //console.log(tvMazeData);
 
-  const allShows = [];
-
-  for (let item of tvMazeData) {
-
-    const indiviualShow = {};
-    indiviualShow.id = item.id;
-    indiviualShow.name = item.name;
-    indiviualShow.summary = item.summary;
-    indiviualShow.image = item.image.medium;
-
-    allShows.push(indiviualShow);
-  }
-  console.log({ allShows });
-
-  return allShows;
+  return shows.map(show => ({
+    id: show.id,
+    name: show.name,
+    summary: show.summary,
+    image: show.image.medium
+  })
+  );
 }
 
 // ADD: other functions that will be useful for getting episode/show data
