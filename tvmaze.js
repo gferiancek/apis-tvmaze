@@ -42,6 +42,43 @@ function parseShowData(showsData) {
   }));
 }
 
+/** Given a show ID, search for tv show episodes that have
+ * the same show ID.
+ *
+ *  Returns (promise) array of episode objects: [episode, episode, ...].
+ *    Each episode object should contain exactly: {id, name, season, number}
+ */
+async function getEpisodesOfShow(showId) {
+  console.log("getEpisodesOfShow", { showId });
+
+  console.log(params.values());
+
+  const resp = await fetch(`${TV_MAZE_BASE_URL}/shows/${showId}/episodes`);
+  const episodeTVData = await resp.json();
+
+  const allEpisodes = parseEpisodeData(episodeTVData);
+
+  return allEpisodes;
+}
+
+/** Takes array of episode objects from TV MAZE API and parses out
+ * infomation relavant to the application.
+ *    Return [ {id, name, season, number}, ...]
+ */
+function parseEpisodeData(showEpisodesData) {
+  console.log("parseEpisodeData");
+  //id, name, season, episode number
+
+  return showEpisodesData.map(episode => ({
+    id: episode.id,
+    name: episode.name,
+    season: episode.season,
+    number: episode.number
+  }));
+
+}
+
+
 // ADD: other functions that will be useful for getting episode/show data
 
 export { getShowsByTerm };
