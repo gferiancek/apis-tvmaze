@@ -14,19 +14,20 @@ function displayShows(shows) {
 
 
   for (const show of shows) {
+    const { id, name, summary, image } = show;
     const $show = document.createElement("div");
-    $show.dataset.showId = show.id;
+    $show.dataset.showId = id;
     $show.className = "Show col-md-12 col-lg-6 mb-4";
 
     $show.innerHTML = `
          <div class="media">
            <img
-              src="${show.image}"
-              alt="${show.name}"
+              src="${image}"
+              alt="${name}"
               class="w-25 me-3">
            <div class="media-body">
-             <h5 class="text-primary">${show.name}</h5>
-             <div><small>${show.summary}</small></div>
+             <h5 class="text-primary">${name}</h5>
+             <div><small>${summary}</small></div>
              <button class="btn btn-outline-light btn-sm Show-getEpisodes">
                Episodes
              </button>
