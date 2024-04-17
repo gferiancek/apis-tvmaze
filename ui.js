@@ -21,8 +21,8 @@ function displayShows(shows) {
     $show.innerHTML = `
          <div class="media">
            <img
-              src="http://static.tvmaze.com/uploads/images/medium_portrait/160/401704.jpg"
-              alt="Bletchly Circle San Francisco"
+              src="${show.image}"
+              alt="${show.name}"
               class="w-25 me-3">
            <div class="media-body">
              <h5 class="text-primary">${show.name}</h5>
@@ -67,7 +67,7 @@ async function searchShowsAndDisplay() {
 
 /** Attach event listeners to show search form and show list  */
 
-function start () {
+function start() {
   $searchForm.addEventListener("submit", async function handleSearchForm(evt) {
     evt.preventDefault();
     await searchShowsAndDisplay();
