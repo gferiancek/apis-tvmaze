@@ -3,6 +3,7 @@ import { getShowsByTerm, getEpisodesByShowId } from "./tvmaze.js";
 const $showsList = document.querySelector("#showsList");
 const $episodesArea = document.querySelector("#episodesArea");
 const $searchForm = document.querySelector("#searchForm");
+const $episodesList = document.querySelector("#episodesList");
 
 /** Given list of shows, create markup for each and append to DOM.
  *
@@ -58,11 +59,20 @@ async function searchShowsAndDisplay() {
 async function getEpisodesOfShow(id) {
 
   const episodes = await getEpisodesByShowId(id);
+  return episodes;
 }
 
 /** Write a clear docstring for this function... */
 
-// function displayEpisodes(episodes) { }
+function displayEpisodes(episodes) {
+    for (let episode of episodes) {
+      const {name, season, number} = episode;
+      const $li = document.createElement("li")
+      $li.innerText = `${name}, ${season}, ${episode}`
+
+      $episodesList.append($li);
+    }
+ }
 
 // add other functions that will be useful / match our structure & design
 // and udpate start as necessary
@@ -76,10 +86,22 @@ function start() {
     await searchShowsAndDisplay();
   });
 
-  $showsList.addEventListener("click", handleClick(evt));
+  $showsList.addEventListener("click", handleEpisodeClick);
 }
-//TODO: add in the handleClick function for listening on the shows area
 
+/** Handles click of Episodes button to fetch episodes */
+async function handleEpisodeClick(evt) {
+  if (!evt.target.matches(".Show-getEpisodes")) return;
+
+  const show = evt.target.closest(".Show");
+  const showId = show.dataset.showId;
+
+  const episodes = await getEpisodesOfShow(showId);
+
+  // console episodes
+
+  displayEpisodes(episodes);
+}
 
 export {
   displayShows,

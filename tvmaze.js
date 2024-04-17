@@ -51,8 +51,6 @@ function parseShowData(showsData) {
 async function getEpisodesByShowId(showId) {
   console.log("getEpisodesOfShow", { showId });
 
-  console.log(params.values());
-
   const resp = await fetch(`${TV_MAZE_BASE_URL}/shows/${showId}/episodes`);
   const episodeTVData = await resp.json();
 
