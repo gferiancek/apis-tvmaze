@@ -1,4 +1,4 @@
-const TV_MAZE_BASE_URL = "http://api.tvmaze.com"
+const TV_MAZE_BASE_URL = "http://api.tvmaze.com";
 
 /** Given a search term, search for tv shows that match that query.
  *
@@ -8,33 +8,16 @@ const TV_MAZE_BASE_URL = "http://api.tvmaze.com"
  */
 
 async function getShowsByTerm(term) {
+  console.log("getShowsByTerm");
   // ADD: Remove placeholder & make request to TVMaze search shows API.
 
-  const params = new URLSearchParams({q: term});
+  const params = new URLSearchParams({ q: term });
 
   const resp = await fetch(`${TV_MAZE_BASE_URL}/shows?${params}`);
   const tvMazeData = await resp.json();
 
   parseTvMazeData(tvMazeData);
 
-  // return [
-  //   {
-  //     id: 1767,
-  //     name: "The Bletchley Circle",
-  //     summary:
-  //       `<p><b>The Bletchley Circle</b> follows the journey of four ordinary
-  //          women with extraordinary skills that helped to end World War II.</p>
-  //        <p>Set in 1952, Susan, Millie, Lucy and Jean have returned to their
-  //          normal lives, modestly setting aside the part they played in
-  //          producing crucial intelligence, which helped the Allies to victory
-  //          and shortened the war. When Susan discovers a hidden code behind an
-  //          unsolved murder she is met by skepticism from the police. She
-  //          quickly realises she can only begin to crack the murders and bring
-  //          the culprit to justice with her former friends.</p>`,
-  //     image:
-  //         "http://static.tvmaze.com/uploads/images/medium_portrait/147/369403.jpg"
-  //   }
-  // ]
 }
 
 /** Takes array of objects from TV MAZE API and parses out
@@ -42,7 +25,24 @@ async function getShowsByTerm(term) {
  *    Return [ {id, name, summary, image}, ...]
  */
 function parseTvMazeData(tvMazeData) {
+  console.log("parseTvMazeData");
+  //console.log(tvMazeData);
 
+  const allShows = [];
+
+  for (let item of tvMazeData) {
+
+    const indiviualShow = {};
+    indiviualShow.id = item.id;
+    indiviualShow.name = item.name;
+    indiviualShow.summary = item.summary;
+    indiviualShow.image = item.image.medium;
+
+    allShows.push(indiviualShow);
+  }
+  console.log({ allShows });
+
+  return allShows;
 }
 
 // ADD: other functions that will be useful for getting episode/show data
